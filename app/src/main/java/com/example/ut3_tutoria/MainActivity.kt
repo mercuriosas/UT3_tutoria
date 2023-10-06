@@ -12,22 +12,27 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -46,6 +51,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -66,9 +72,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Greeting("Android")
-                    DragonCard()
-                    //MyStateExample()
+                    Column {
+                        //Greeting("Android")
+                        DragonCard()
+                        //MyStateExample()
+                        MySwitch()
+                        MyCheckBox()
+                    }
+
                 }
             }
         }
@@ -144,8 +155,7 @@ fun DragonCard(/*...*/) {
             }
         }
         Row(
-            modifier = Modifier
-                .size(width = 400.dp, height = 100.dp)
+            modifier = Modifier.width(400.dp)
                 .padding(5.dp)
         ) {
             Image(
@@ -176,8 +186,7 @@ fun DragonCard(/*...*/) {
             MyIcon()
         }
         Row(
-            modifier = Modifier
-                .size(width = 400.dp, height = 100.dp)
+            modifier = Modifier.width(400.dp)
                 .padding(5.dp)
         ) {
             myButton()
@@ -209,9 +218,7 @@ fun myButton() {
         }
         var enable by rememberSaveable { mutableStateOf(true) }
         Column(
-            Modifier
-                .fillMaxSize()
-                .padding(24.dp)
+            Modifier.padding(24.dp)
         ) {
             OutlinedButton(
                 onClick = { enable = false },
@@ -235,9 +242,7 @@ fun myButton() {
 fun MyButtonRem() {
     var enable by rememberSaveable { mutableStateOf(true) }
     Column(
-        Modifier
-            .fillMaxSize()
-            .padding(24.dp)
+        Modifier.padding(24.dp)
     ) {
         Button(
             onClick = { enable = false },
@@ -261,7 +266,7 @@ fun MyStateExample() {
     //val counter: MutableState<Int> = remember {mutableStateOf(0)}
     var counter by rememberSaveable { mutableStateOf(0) }
     Column(
-        modifier = Modifier.fillMaxSize(),
+        //modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -276,6 +281,33 @@ fun MyStateExample() {
 @Composable
 fun MyIcon() {
     Icon(imageVector = Icons.Rounded.Star, contentDescription = "Icono Estrella", tint = Color.Red)
-gf
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MySwitch() {
+    var state by rememberSaveable { mutableStateOf(true) }
+    Switch(
+        checked = state, onCheckedChange = { state = !state }, colors = SwitchDefaults.colors(
+            uncheckedThumbColor = Color.Red,
+            checkedThumbColor = Color.Green,
+            uncheckedTrackColor = Color.Cyan,
+            checkedTrackColor = Color.DarkGray
+        )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MyCheckBox() {
+    var estadoCheck by rememberSaveable { mutableStateOf(false) }
+
+    Row(
+        Modifier
+            .padding(16.dp)
+    ) {
+        Checkbox(checked = estadoCheck, onCheckedChange = { estadoCheck = !estadoCheck })
+        Text("Option", Modifier.weight(1f))
+    }
 }
 
