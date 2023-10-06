@@ -276,5 +276,6 @@ fun MyStateExample() {
 @Composable
 fun MyIcon() {
     Icon(imageVector = Icons.Rounded.Star, contentDescription = "Icono Estrella", tint = Color.Red)
+gf
 }
 
