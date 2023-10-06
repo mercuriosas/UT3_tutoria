@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +17,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -26,12 +32,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -58,6 +68,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //Greeting("Android")
                     DragonCard()
+                    //MyStateExample()
                 }
             }
         }
@@ -111,7 +122,9 @@ fun DragonCard(/*...*/) {
             Image(
                 painter = painterResource(id = R.drawable.dragon),
                 contentDescription = "Dragon Ball",
-                modifier = Modifier.requiredSize(150.dp)
+                modifier = Modifier
+                    .requiredSize(150.dp)
+                    .alpha(1f)
             )
             Spacer(modifier = Modifier.width(10.dp))
             Column {
@@ -135,6 +148,16 @@ fun DragonCard(/*...*/) {
                 .size(width = 400.dp, height = 100.dp)
                 .padding(5.dp)
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.dragon),
+                contentDescription = "Dragon Ball",
+                modifier = Modifier
+                    .requiredSize(75.dp)
+                    .clip(CircleShape)
+                    .border(5.dp, color = Color.Red, CircleShape)
+                //.clip(RoundedCornerShape(25f))
+            )
+
             var estadoTextField by remember { mutableStateOf(" ") }
             TextField(value = estadoTextField, onValueChange = { estadoTextField = it })
         }
@@ -150,16 +173,19 @@ fun DragonCard(/*...*/) {
                     unfocusedBorderColor = Color.LightGray
                 )
             )
+            MyIcon()
         }
-        Row (modifier = Modifier
-            .size(width = 400.dp, height = 100.dp)
-            .padding(5.dp)
+        Row(
+            modifier = Modifier
+                .size(width = 400.dp, height = 100.dp)
+                .padding(5.dp)
         ) {
             myButton()
         }
-        Row (
+        Row(
         ) {
             MyButtonRem()
+
         }
     }
 }
@@ -169,7 +195,8 @@ fun DragonCard(/*...*/) {
 @Composable
 fun myButton() {
     Column() {
-        Button(onClick = { /*TODO*/ },
+        Button(
+            onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Blue,
                 contentColor = Color.Magenta
@@ -180,19 +207,20 @@ fun myButton() {
                 Text(text = "Primer Botón")
             }
         }
-        var enable by rememberSaveable { mutableStateOf(true)  }
+        var enable by rememberSaveable { mutableStateOf(true) }
         Column(
             Modifier
                 .fillMaxSize()
                 .padding(24.dp)
         ) {
-            OutlinedButton(onClick = { enable = false },
-                enabled=enable,
+            OutlinedButton(
+                onClick = { enable = false },
+                enabled = enable,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Blue,
                     contentColor = Color.Magenta
                 ),
-                modifier = Modifier.padding(top=8.dp)
+                modifier = Modifier.padding(top = 8.dp)
             ) {
                 Text(text = "Outlined Button")
 
@@ -205,7 +233,7 @@ fun myButton() {
 @Preview(showBackground = true)
 @Composable
 fun MyButtonRem() {
-    var enable by rememberSaveable { mutableStateOf(true)  }
+    var enable by rememberSaveable { mutableStateOf(true) }
     Column(
         Modifier
             .fillMaxSize()
@@ -213,7 +241,7 @@ fun MyButtonRem() {
     ) {
         Button(
             onClick = { enable = false },
-            enabled=enable,
+            enabled = enable,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Blue,
                 contentColor = Color.Magenta
@@ -224,3 +252,29 @@ fun MyButtonRem() {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun MyStateExample() {
+    //var counter = mutableStateOf(0)
+    //var counter = remember {mutableStateOf(0)}
+    //val counter: MutableState<Int> = remember {mutableStateOf(0)}
+    var counter by rememberSaveable { mutableStateOf(0) }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = { counter++ }) {
+            Text(text = "Pulsar")
+        }
+        Text(text = "He sido pulsado $counter veces")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MyIcon() {
+    Icon(imageVector = Icons.Rounded.Star, contentDescription = "Icono Estrella", tint = Color.Red)
+}
+
